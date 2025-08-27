@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  classifier-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: image-classifier
+    ports:
+      - "8004:8004"
+    environment:
+      - MODEL_PATH=/app/models
+      - DATA_PATH=/app/data
+      - PYTHONUNBUFFERED=1
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      - ./src:/app/src
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./config:/app/config
+      - photo_library:/app/photos
+    networks:
+      - classifier-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  classifier-db:
+    image: postgres:16-alpine
+    container_name: classifier-db
+    environment:
+      - POSTGRES_USER=classifier
+      - POSTGRES_PASSWORD=classifier123
+      - POSTGRES_DB=photo_classifier
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - classifier-network
+    restart: unless-stopped
+
+  classifier-ui:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: classifier-ui
+    ports:
+      - "3003:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8004
+    depends_on:
+      - classifier-backend
+    networks:
+      - classifier-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: classifier-redis
+    ports:
+      - "6381:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - classifier-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  photo_library:
+
+networks:
+  classifier-network:
+    driver: bridge
