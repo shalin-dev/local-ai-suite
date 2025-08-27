@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  rag-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: local-rag-backend
+    ports:
+      - "8002:8002"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./data:/app/data
+      - ./embeddings:/app/embeddings
+      - ./config:/app/config
+    depends_on:
+      - chromadb
+      - ollama
+    networks:
+      - rag-network
+    restart: unless-stopped
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: rag-chromadb
+    ports:
+      - "8003:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=false
+      - ALLOW_RESET=true
+    networks:
+      - rag-network
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rag-ollama
+    ports:
+      - "11436:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+    networks:
+      - rag-network
+    restart: unless-stopped
+
+  rag-ui:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: rag-ui
+    ports:
+      - "3002:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8002
+    depends_on:
+      - rag-backend
+    networks:
+      - rag-network
+    restart: unless-stopped
+
+volumes:
+  chroma_data:
+  ollama_data:
+
+networks:
+  rag-network:
+    driver: bridge
