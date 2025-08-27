@@ -4,7 +4,26 @@ A collection of powerful, privacy-focused AI applications that run entirely on y
 
 ## 🚀 Applications
 
-### 1. [Personal AI Assistant Dashboard](./personal-ai-assistant-dashboard)
+### 1. [Local Speech-to-Text System](./local-speech-to-text) 🆕
+**Status:** 🐳 Docker Ready
+
+Privacy-focused speech recognition using OpenAI's Whisper model running entirely offline.
+
+**Key Features:**
+- 99+ language support with auto-detection
+- Real-time browser recording
+- Multiple model sizes (39MB to 1.5GB)
+- Translation to English
+- Word-level timestamps
+- Export to TXT, SRT, VTT, JSON
+
+**Ports:**
+- API: `8095`
+- Redis: `6382`
+
+---
+
+### 2. [Personal AI Assistant Dashboard](./personal-ai-assistant-dashboard)
 **Status:** ✅ Running (http://localhost:5173)
 
 Unified interface for multiple local AI models with chat, image generation, and code assistance.
@@ -22,7 +41,7 @@ Unified interface for multiple local AI models with chat, image generation, and 
 
 ---
 
-### 2. [AI-Powered Code Documentation Generator](./ai-code-documentation-generator)
+### 3. [AI-Powered Code Documentation Generator](./ai-code-documentation-generator)
 **Status:** 🐳 Docker Ready
 
 Automatically generate comprehensive documentation for any codebase using local LLMs.
@@ -40,7 +59,7 @@ Automatically generate comprehensive documentation for any codebase using local 
 
 ---
 
-### 3. [Local RAG System](./local-rag-system)
+### 4. [Local RAG System](./local-rag-system)
 **Status:** 🐳 Docker Ready
 
 Build a personal knowledge base from your documents with semantic search capabilities.
@@ -59,7 +78,7 @@ Build a personal knowledge base from your documents with semantic search capabil
 
 ---
 
-### 4. [AI Image Classifier for Photos](./ai-image-classifier)
+### 5. [AI Image Classifier for Photos](./ai-image-classifier)
 **Status:** 🐳 Docker Ready
 
 Automatically organize and tag your photo library using local vision models.
@@ -117,6 +136,7 @@ cd ai-image-classifier && docker-compose up -d
 
 | Application | RAM | CPU | GPU | Storage |
 |------------|-----|-----|-----|---------|
+| Speech-to-Text | 2-10GB | 2-4 cores | Optional | 2-5GB |
 | AI Assistant | 2GB | 2 cores | Optional | 5GB |
 | Code Doc Gen | 1GB | 2 cores | No | 2GB |
 | RAG System | 4GB | 2 cores | Optional | 10GB+ |
