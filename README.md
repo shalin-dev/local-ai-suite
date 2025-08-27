@@ -148,21 +148,6 @@ BATCH_SIZE: 32
 USE_GPU: true
 ```
 
-## 🗺 Roadmap
-
-### Coming Soon
-- [ ] Mobile apps for remote access
-- [ ] Federated learning support
-- [ ] Voice interface integration
-- [ ] Advanced analytics dashboard
-- [ ] Kubernetes deployment configs
-
-### Future Applications
-- [ ] Local Speech-to-Text system
-- [ ] AI-powered email assistant
-- [ ] Smart home automation hub
-- [ ] Personal finance analyzer
-- [ ] Health data insights
 
 ## 🤝 Contributing
 
