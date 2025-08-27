@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+venv/
+env/
+.env
+*.db
+*.sqlite3
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+build/
+.next/
+.nuxt/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker
+*.log
+.docker/
+
+# AI Models
+*.bin
+*.onnx
+*.pt
+*.pth
+*.h5
+*.safetensors
+models/*.pkl
+embeddings/
+ollama_data/
+
+# Generated
+generated_images/
+uploads/
+output/
+repos/
+data/*.pdf
+data/*.docx
+
+# Temporary
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# Secrets
+.env.local
+.env.production
+secrets/
+config/secrets.yaml

@@ -1,0 +1,4 @@
+- Personal AI Assistant Dashboard - Unified interface for multiple local AI models (chat, image generation, code help) with conversation history
+- AI-Powered Code Documentation Generator - Scans codebases and uses local LLMs to generate/update documentation automatically
+- Local RAG (Retrieval Augmented Generation) System - Build a personal knowledge base that works with your documents using local embedding models
+- AI Image Classifier for Personal Photos - Use local vision models to auto-tag and organize your photo library
