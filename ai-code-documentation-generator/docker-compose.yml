@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  doc-generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: code-doc-generator
+    ports:
+      - "8001:8001"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - REDIS_URL=redis://redis:6379
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./src:/app/src
+      - ./output:/app/output
+      - ./repos:/app/repos
+      - ./templates:/app/templates
+    depends_on:
+      - redis
+      - ollama
+    networks:
+      - doc-gen-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: doc-gen-redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - doc-gen-network
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: doc-gen-ollama
+    ports:
+      - "11435:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+    networks:
+      - doc-gen-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  web-ui:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: doc-gen-ui
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8001
+    depends_on:
+      - doc-generator
+    networks:
+      - doc-gen-network
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  ollama_data:
+
+networks:
+  doc-gen-network:
+    driver: bridge
